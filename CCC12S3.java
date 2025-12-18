@@ -22,57 +22,43 @@ public class CCC12S3 {
 		return valCount;
 	}
 	
-	public static int findMax(int[] sensorCount) {
-		
-		int largestIndex = 0;
-		
-		int largestCount = 0;
-		
+	// finds the max and min of the most frequent in int[] count
+	public static int[] mostFreq(int[] count, int freq) { 
+		int maxFreq = 1;
+		int maxVal = 1; // largest value of the most frequent
+		int minVal = Integer.MAX_VALUE; // min value of the most frequent
 		for(int i = 0; i < 1001; i++) {
-			if(sensorCount[i] >= largestCount) {
-				largestCount = sensorCount[i];
-				if(i > largestIndex){
-//					System.out.println("found new largest: " + largestCount);
-					largestIndex = i;
+			if(count[i] < freq) {
+				if(count[i] > maxFreq) {
+					maxFreq = count[i];
+					maxVal = i;
+					minVal = i;
 				}
-				
-			}
-		}
-		
-		return largestIndex;
-	}
-	
-	public static int findMin(int[] sensorCount, int maxNum) {
-		int smallestIndex = 1002;
-		int largestCount = 0;
-		
-		for(int i = 0; i < 1001; i++) {
-			if(sensorCount[i] > largestCount && i != maxNum) {
-				largestCount = sensorCount[i];
-				if(i > smallestIndex ){
-//					System.out.println("found new largest 2nd: " + i);
-					smallestIndex = i;
-				}
-			}
-			else if (sensorCount[i] == largestCount) {
-				if(i < smallestIndex) {
-					smallestIndex = i;
+				else if(count[i] == maxFreq) {
+					maxVal = Math.max(maxVal, i);
+					minVal = Math.min(minVal, i);
 				}
 			}
 		}
-		
-		return smallestIndex;
+		int[] output = {maxVal, minVal, maxFreq};
+		return output;
 	}
 	
 	public static void main(String args[]) {
 		int[] c = countReps();
-//		for(int i = 0; i < 1001; i++) {
-//			if(c[i] > 0) {
-//				System.out.println(i + " " + c[i]);
-//			}
-//		}
-		System.out.println(findMax(c)-findMin(c, findMax(c)));
-//		System.out.println(findMin(c, findMax(c)));
+		int[] most = mostFreq(c, Integer.MAX_VALUE);
+		int[] secondMost = mostFreq(c, most[2]);
+		
+		System.out.println(most[0] + " " + most[1]);
+ 		System.out.println(secondMost[0] + " " + secondMost[1]);
+ 		
+ 		if(most[0] == most[1]) { // most frequent max and min are same value, means only 1 most frequent value
+ 			System.out.println(Math.max(Math.abs(most[0]-secondMost[0]), Math.abs(most[0] - secondMost[1])));
+ 		}
+ 		else {
+ 			System.out.println(most[0] - most[1]);
+ 		}
+ 		
 	}
 	
 }
